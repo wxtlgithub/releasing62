@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="BlackWhiteListDAO" class="com.lxt2.business.dal.blackwhitelist.BlackWhiteListDAL"
+		scope="prototype">
+
+		<property name="selectAll">
+			<bean class="com.lxt2.common.common.model.PageSQL">
+				<property name="sqlType">
+					<value type="com.lxt2.common.common.model.SQLType">SQL</value>
+				</property>
+				<property name="countSQL"
+					value="select count(0) from ( select * from TLV_LOG_BWList where datcreattime > date '{0}' and datcreattime &lt; (date '{1}'+1) and numlisttype in ({2}) and numsvcid={3}  ) a "></property>
+				<!-- and vc2username like '{4}' -->
+				<property name="pageSQL"
+					value="
+					select * from (select rownum numrowasdf, 
+				adsfsds.* from
+					(
+					select numlogid,numuserid,
+					to_char(datcreattime,'yyyy-mm-dd hh24:mi:ss') datcreattime,
+					to_char(datmodifytime,'yyyy-mm-dd hh24:mi:ss') datmodifytime,
+					Nvl(numtotalnum,0) as numtotalnum ,
+					Nvl(numsuccessnum,0) as numsuccessnum ,
+					Nvl(numfailed,0) as numfailed,vc2filename,
+					numlisttype,numsrc,numsvcid,vc2backuppath,vc2svcname,
+					vc2departname,vc2username,numstate from TLV_LOG_BWList  
+					where NUMLOGID in (
+					   ( select numlogid from TLV_LOG_BWList 
+					  where datcreattime > date '{0}' and 
+					  datcreattime &lt; (date '{1}'+1) and 
+					  numlisttype in ({2}) and numsvcid={3}  ) 
+					  ) order by DATCREATTIME desc,NUMLOGID desc)
+					  adsfsds where rownum &lt; {5}+1) where numrowasdf > {4}" />
+			</bean>
+		</property>
+
+		<property name="queryBWListLogDetailSQL"
+			value="select VC2MOBILE,VC2STATE  from TLV_DETAILS_BWLIST where NUMLOGID={0}" />
+	</bean>
+	
+	<bean id="SvcBlackListDAO" class="com.lxt2.business.dal.blackwhitelist.SvcBlacListDAL" scope="prototype">
+		<property name="selectAll">
+			<bean class="com.lxt2.common.common.model.PageSQL4PartList">
+				<property name="sqlType">
+					<value type="com.lxt2.common.common.model.SQLType">SQL</value>
+				</property>
+				<property name="pageSQLObj">
+					<bean class="com.lxt2.common.common.model.SQLObj">
+						<property name="SQL"
+							value="
+								select * from (select rownum numrowasdf,
+					                adsfsds.* from (
+								          select numlogid,numuserid,
+								          to_char(datcreattime,'yyyy-mm-dd hh24:mi:ss') datcreattime,
+								          to_char(datmodifytime,'yyyy-mm-dd hh24:mi:ss') datmodifytime,
+								          Nvl(numtotalnum,0) as numtotalnum ,
+								          Nvl(numsuccessnum,0) as numsuccessnum ,
+								          Nvl(numfailed,0) as numfailed,vc2filename,
+								          numlisttype,numsrc,numsvcid,vc2backuppath,vc2svcname,
+								          vc2departname,vc2username,numstate, 
+								          g.numgwid,g.vc2gatewayname
+                  						  from TLV_LOG_BWList l,tl_gateway g
+                 						  where l.numsvcid = g.numgwid  #0#
+								          order by DATCREATTIME desc,NUMLOGID desc
+								 ) adsfsds where rownum &lt; {0}+{1}+1) where numrowasdf > {0}
+						" />
+					</bean>
+				</property>
+				<property name="countSQLObj">
+					<bean class="com.lxt2.common.common.model.SQLObj">
+						<property name="SQL"
+							value="select count(1) from TLV_LOG_BWList l,tl_gateway g where l.numsvcid = g.numgwid #0#" />
+					</bean>
+				</property>
+				<property name="sqlPartList">
+					<list>
+						<!-- 开始时间 -->
+						<value>datcreattime > date '{0}' </value>
+						<!-- 结束时间 -->
+						<value>datcreattime &lt; date '{0}'+1</value>
+						<!-- 网关ID -->
+						<value>numgwid={0}</value>
+						<!-- 类型 -->
+						<value>numlisttype in ({0})</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="queryBWListLogDetailSQL"
+			value="select VC2MOBILE,VC2STATE  from TLV_DETAILS_BWLIST where NUMLOGID={0} and datcreatetime > date '{1}' and datcreatetime &lt; date '{1}' + 1" />
+
+	</bean>
+	<!-- <bean id="whiteTempDAL" class="com.lxt2.business.dal.blackwhitelist.WhiteTempDAL" 
+		/> -->
+
+</beans>

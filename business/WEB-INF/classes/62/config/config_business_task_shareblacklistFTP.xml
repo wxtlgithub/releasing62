@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<function id="994" name="business_task_shareblacklistFTP" desc="共享黑名单FTP操作配置文件">
+	<item key="blackListFtpDir" value="${WORKDIR}WEB-INF/classes/Service/Tasks/ShareBlackListSvr/file/BlackListFTP/" desc="共享黑名单FTP文上传件目录"/>
+	<item key="ftpCountDir" value="1,2,3" desc="ftp链接字段"/>
+	<item key="hostnameDir1" value="192.168.4.217" desc="网络链接地址"/>
+	<item key="ftpPortDir1" value="21" desc="port"/>
+	<item key="ftpUsernameDir1" value="yxtqd_52" desc="用户名"/>
+	<item key="ftpPasswordDir1" value="yxtqd_52" desc="密码"/>
+	<item key="ShareBlackFtpFileUrl1" value="/data/gwblackfiles/" desc="ftp上传目的地址" />
+	<item key="hostnameDir2" value="192.168.4.116" desc="网络链接地址"/>
+	<item key="ftpPortDir2" value="21" desc="port"/>
+	<item key="ftpUsernameDir2" value="yxt52" desc="用户名"/>
+	<item key="ftpPasswordDir2" value="yxt52" desc="密码"/>
+	<item key="ShareBlackFtpFileUrl2" value="/data/gwblackfiles/" desc="ftp上传目的地址" />
+	
+	<item key="backPathDir" value="${WORKDIR}WEB-INF/classes/Service/Tasks/ShareBlackListSvr/file/BlackListFTPLogBackUp/" desc="ftp备份目录" />
+</function>

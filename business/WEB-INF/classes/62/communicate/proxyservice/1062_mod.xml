@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="psModule1062" class="com.lxt20.interfaceservice.PSDbModule">
+		<property name="id" value="1062" />
+		<property name="name" value="接口服务DB" />
+		<property name="hub" ref="hubImpl"/>
+		<property name="smsContentQueue" ref="apiSmsContentTblQueue" />
+		<property name="mmsContentQueue" ref="apiMmsContentTblQueue" />
+		<!-- 计数统计服务 -->
+		<property name="countService" ref="psCounterService1062" />
+		<property name="controlCmdMap">
+			<map>
+				<entry key="qePerf" value-ref="psQueueCmd1062" />
+				<entry key="view" value-ref="psViewCmd1062" />
+                <entry key="getecsendkpi" value-ref="getEcKpi1062"/>				
+			</map>
+		</property>
+		<property name="kpiList">
+			<list>
+				<ref bean="psModuleKPI1062"/>
+			</list>
+		</property>
+		
+	</bean>
+	<bean id="psModuleKPI1062" class="com.lxt20.interfaceservice.PSDBModuleKPI">
+		<property name="countService" ref="psCounterService1062"/>
+		<property name="module" ref="psModule1062"/>
+	</bean>
+	<!-- 计数统计服务 -->
+	<bean id="psCounterService1062" class="com.lxt2.proxyservice.statistic.StandardCountService" init-method="init" destroy-method="destroy">
+		<property name="propertyFileName" value="${CLASSPATH}/${nodeID}/persistent/statistics/proxyservice1062.properties"/>
+	</bean>
+		<!-- 定时发送队列KPI -->
+	<bean id="psTimerQueueKPI1062" class="com.lxt2.queuekc.QueueKPI">
+		<property name="queue" ref="psTimerQueue1062"/>
+	</bean>
+	<bean id="psTimerListener1062" class="com.lxt2.proxyservice.TimerSubmitListener">
+		<property name="module" ref="psModule1062" />
+	</bean>
+	<bean id="psTimerQueue1062" class="com.lxt2.queuekc.CacheQueue">
+		<!-- Cache注入，使用定时Cache -->
+		<property name="cache">
+			<bean class="ihandy.lxt20.persist.cache.TsCache" />
+		</property>
+		<!-- 队列名称 -->
+		<property name="queueName" value="mtTimer1062" />
+		<!-- 监听器 -->
+		<property name="listener" ref="psTimerListener1062" />
+	</bean>
+	
+		<bean id="psQueueCmd1062" class="com.lxt2.queuekc.QueuePerfCmd">
+		<property name="kpiQueueList">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<!-- 获取模块的监视信息 -->
+	<bean id="psViewCmd1062" class="com.lxt2.base.module.ModuleKPICmd">
+		<property name="kpi" ref="psModuleKPI1062"/>
+	</bean>
+	<!-- 获取EC计数模块信息 -->
+	<bean id="ecCountService1062" class="com.lxt2.proxyservice.statistic.EcCountService">
+		<property name="propertyFileName" value="${CLASSPATH}/${nodeID}/persistent/statistics/proxyservice1062.properties"/>
+	</bean>
+	
+	<bean id="prepayControlHandler1062" class="com.lxt2.proxyservice.statistic.PrepayControlHandler">
+		<property name="countService" ref="ecCountService1062"/>
+		<property name="verify" ref="prepaidEcVerify"/>
+		<property name="module" ref="psModule1062"/>
+		<property name="needOverPay" ref="needOverPay"/>
+		<!-- 平台客户端 -->
+		<property name="plantformClientMap">
+			<map>
+				<entry key="0" value="0" />
+				<entry key="1" value="1" />
+				<entry key="3" value="3" />
+				<entry key="4" value="4" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean id="getEcKpi1062" class="com.lxt2.proxyservice.statistic.GetEcKpiCmd">
+		<property name="control" ref="prepayControlHandler1062"/>
+	</bean>
+	
+	
+</beans>

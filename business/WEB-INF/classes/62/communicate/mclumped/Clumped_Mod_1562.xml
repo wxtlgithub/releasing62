@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 分布式模块 -->
+	<bean id="clumpedModule1562" class="com.clumped.module.ClumpedModule">
+		<property name="id" value="1562" />
+		<property name="name" value="分布式通讯模块" />
+		<property name="hub" ref="hubImpl" />
+		<property name="clumpedModuleConfig" ref="clumpedModuleConfig1562"></property>
+		<property name="reciever" ref="reciever"></property>
+		<property name="handlerList">
+			<!-- 消息处理handler -->
+			<list>
+				<ref bean="clumpedLoginHandler" />
+				<ref bean="clumpedDeliverHandler" />
+				<ref bean="clumpedDeliverRespHandler" />
+				<ref bean="clumpedReportHandler"/>
+				<ref bean="clumpedReportRespHandler"/>
+				<ref bean="clumpedResponseHandler"/>
+				<ref bean="clumpedResponseRespHandler"/>
+				<ref bean="clumpedSubmitHandler"/>
+				<ref bean="clumpedSubmitRespHandler"/>
+			</list>
+		</property>
+		<property name="msgList">
+			<list>
+				<value>com.clumped.protocol.clumped.Clumped_Active_Test_Resp</value>
+				<value>com.clumped.protocol.clumped.Clumped_Active_Test</value>
+				<value>com.clumped.protocol.clumped.Clumped_Connect_Resp</value>
+				<value>com.clumped.protocol.clumped.Clumped_Connect</value>
+				<value>com.clumped.protocol.clumped.Clumped_Deliver_Resp</value>
+				<value>com.clumped.protocol.clumped.Clumped_Deliver</value>
+				<value>com.clumped.protocol.clumped.Clumped_Report_Resp</value>
+				<value>com.clumped.protocol.clumped.Clumped_Report</value>
+				<value>com.clumped.protocol.clumped.Clumped_Response_Resp</value>
+				<value>com.clumped.protocol.clumped.Clumped_Response</value>
+				<value>com.clumped.protocol.clumped.Clumped_Submit_Resp</value>
+				<value>com.clumped.protocol.clumped.Clumped_Submit</value>
+				<value>com.clumped.protocol.clumped.Clumped_Terminate_Resp</value>
+				<value>com.clumped.protocol.clumped.Clumped_Terminate</value>
+			</list>
+		</property>
+	</bean>
+	<bean  id="clumpedLoginHandler" class="com.clumped.handler.ClumpedLoginHandler">
+	</bean>
+	<bean  id="clumpedDeliverHandler" class="com.clumped.handler.ClumpedDeliverHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="clumpedDeliverRespHandler" class="com.clumped.handler.ClumpedDeliverRespHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="clumpedReportHandler" class="com.clumped.handler.ClumpedReportHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="clumpedReportRespHandler" class="com.clumped.handler.ClumpedReportRespHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="clumpedResponseHandler" class="com.clumped.handler.ClumpedResponseHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="clumpedResponseRespHandler" class="com.clumped.handler.ClumpedResponseRespHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="clumpedSubmitHandler" class="com.clumped.handler.ClumpedSubmitHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="clumpedSubmitRespHandler" class="com.clumped.handler.ClumpedSubmitRespHandler">
+		<property name="hub" ref="hubImpl"></property>
+	</bean>
+	<bean  id="reciever" class="com.clumped.module.ClumpedReciever">
+	</bean>
+	<bean id="PerformanceLoggerTask" class="com.lxt2.clumped.task.PerformanceLoggerTask">
+             <property name="id" value="113" />
+             <property name="name" value="队列日志任务" />
+             <property name="taskSchRule" value="@{cycle(10)}" />
+     </bean>
+</beans>

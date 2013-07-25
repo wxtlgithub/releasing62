@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<function id="501" name="default" desc="默认配置文件">
+	<component id="alertCmdConfig" name="" desc="监控中心命令配置">
+		<item key="alertCmd" value="-U62 -F802 -Creload" desc="命令"/>
+	</component>
+	<component id="alertGetDataCmd" name="" desc="监控中心根据不同网元获取数据">
+		<item key="alertCmd" value="-U%s -Cviewall"/>
+		<item key="networkUnits" value="21,23,24,26,27,28,53,35,36,37" desc="网元"/>
+	</component>
+	<component id="templatePath" name="配置生成路径" desc="配置生成路径">
+		<item key="TEMPLATE_PATH" value="/62/web/templates/" desc="模板文件根路径"/>
+		<item key="MOROUTE" value="deliver_routers.xml.ftl" desc="上行路由配置模板文件"/>
+		<item key="PRODUCT" value="config_product.xml.ftl" desc="通道组鉴权配置文件"/>
+		<item key="FILINGSIGNTURE" value="config_filingsignture.xml.ftl" desc="报备签名模板配置文件"/>
+		<item key="ECPREPAID" value="config_prepaid.xml.ftl" desc="EC预付费模板配置文件"/>
+	</component>
+	<component id="networkElement" name="网元配置部署" desc="可视化网元配置">
+		<item key="elementPath" value="${WORKDIR}WEB-INF/classes/web/element/" desc="网元文件根路径"/>
+		<item key="dynamicsPath" value="${WORKDIR}WEB-INF/classes/62/web/element/dynamics/" desc="网元生成路径"/>
+		<item key="templatePath" value="/62/web/templates" desc="模板路径"/>
+		<item key="templateFileName" value="config_systemconfig.xml.ftl" desc="模板文件名"/>
+		<item key="configFileName" value="system_config.xml" desc="配置文件名"/>
+		<item key="projectName" value="communication" desc="项目名称"/>
+		<item key="projectNameMain" value="yxt" desc="主控项目名称"/>
+	</component>
+</function>

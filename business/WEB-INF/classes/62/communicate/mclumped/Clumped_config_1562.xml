@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 分布式模块 -->
+	<bean id="clumpedModuleConfig1562" class="com.clumped.module.ClumpedModuleConfig">
+		<!--默认三天  3 * 24 * 60 * 60 -->
+		<property name="outTime" value="259200" />
+		<!-- 默认半小时执行一次 -->
+		<property name="reSendTaskSchRule" value="@{sch(30)}" />
+		<!-- 最大空闲时间（秒） -->
+		<property name="idleTime" value="60" />
+		<!-- 速度统计时间间隔  -->
+		<property name="speedCountThreadperiod" value="1000" />
+		<property name="maxSessionCount" value="200" />
+		<!-- 服务端 输出缓冲区大小 整型 默认10240 -->
+		<property name="serverSendBufferSize" value="10240" />
+		<!-- 服务端 输入缓冲区大小 默认10240 -->
+		<property name="serverReceiveBufferSize" value="10240" />
+		<!-- 滑动窗口大小 -->
+		<property name="serverControlWindowSize" value="16" />
+		<!-- 放入滑动窗口中数据最大重发次数，默认0次 -->
+		<property name="serverControlWindowMsgMaxResend" value="0" />
+		<!-- 放入滑动窗口中数据最大存活时间,单位秒 -->
+		<property name="serverControlWindowMsgMaxTime" value="30" />
+		<!-- 滑动窗口清理时间周期 -->
+		<property name="serverControlWindowClearCycle" value="30" />
+		<property name="clumpedClientConfigMap">
+			<map>
+				<entry key="24" value-ref="clumpedClientConfigNode24" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 分布式模块 -->
+	<bean id="clumpedClientConfigNode24" class="com.clumped.module.ClumpedClientConfig">
+		<!--客户端 输入缓冲区大小 默认10240-->
+		<property name="receiveBufferSize" value="10240"></property>
+		<!-- 客户端 输出缓冲区大小 整型 默认10240 -->
+		<property name="sendBufferSize" value="10240"></property>
+		<!--滑动窗口大小 -->
+		<property name="controlWindowSize" value="16"></property>
+		<!-- 滑动窗口清理时间周期 -->
+		<property name="controlWindowClearCycle" value="30"></property>
+		<!--放入滑动窗口中数据最大存活时间,单位秒-->
+		<property name="controlWindowMsgMaxTime" value="30"></property>
+		<!-- 放入滑动窗口中数据最大重发次数，默认0次 -->
+		<property name="controlWindowMsgMaxResend" value="0"></property>
+		<!--下行连接 数量配置 -->
+		<property name="mtCount" value="2"></property>
+		<!-- 上行连接配置 -->
+		<property name="moCount" value="1"></property>
+		<!-- 双工连接 数量配置-->
+		<property name="moMtCount" value="0"></property>
+	</bean>	
+</beans>
